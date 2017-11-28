@@ -19,6 +19,9 @@
         http://mybatis.org/schema/mybatis-spring
         http://mybatis.org/schema/mybatis-spring.xsd">
 
+
+	<context:annotation-config/>
+
 	<context:property-placeholder
 		location="classpath:/conf/profile.global.${ambiente}.properties" />
 

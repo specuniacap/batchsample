@@ -1,6 +1,6 @@
 <configuration>
 	<property resource="conf/profile.global.${ambiente}.properties" />
-    <property resource="conf/profile.local.${ambiente}.properties" />
+    <property resource="conf/profile.com.capgemini.batch.${nomeJob}.${ambiente}.properties" />
     
  	
     <timestamp key="timestamp" datePattern="yyyyMMdd" />
