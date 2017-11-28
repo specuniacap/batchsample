@@ -22,7 +22,6 @@ import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Value;
 
-//import com.capgemini.batch.commons.utils.FileFilterUtils;
 
 public class DirPartitioner extends JobExecutionListenerSupport implements Partitioner {
 
