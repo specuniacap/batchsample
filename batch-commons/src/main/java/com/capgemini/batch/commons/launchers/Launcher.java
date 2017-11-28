@@ -1,32 +1,32 @@
 package com.capgemini.batch.commons.launchers;
 
-import java.util.Properties;
-
-import javax.annotation.Resource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AppUtils {
-	protected Log logger = LogFactory.getLog(AppUtils.class);
+public class Launcher implements ILauncher {
+	protected Log logger = LogFactory.getLog(getClass());
 
-	@Resource(name = "fileApplicationProperties")
-	private Properties fileApplicationProperties;
+	@Value("#{fileApplicationProperties['launcher.mutex.dir']}")
+	private String launcherMutexDir;
 
-	public void launch(String[] springConfig, String jobName) {
+	public void launch(ApplicationContext context) {
 
 		MutexExecutionChecker mec = new MutexExecutionChecker();
 		boolean deleteFileMutex = true;
 		try {
-			mec.setBatchInExecutionFilePath("C:/temp/" + jobName + ".mutex");
+			Job job = (Job) context.getBean(Job.class);
+			
+			logger.info("Going to run job [" + job.getName() + "]");
+
+			mec.setBatchInExecutionFilePath(launcherMutexDir + job.getName() + ".mutex");
 			if (mec.isFileInExecutionPresent()) {
 				deleteFileMutex = false;
 				logger.warn("Execution aborted: file mutex [" + mec.getBatchInExecutionFilePath() + "] presente");
@@ -34,13 +34,8 @@ public class AppUtils {
 			} else
 				mec.createInExecutionFile();
 
-			ApplicationContext context = new ClassPathXmlApplicationContext(springConfig);
-			
 			JobLauncher jobLauncher = (JobLauncher) context.getBean("jobLauncher");
-			Job job = (Job) context.getBean(jobName);
-			
-			logger.debug(fileApplicationProperties);
-			
+
 			JobExecution execution = jobLauncher.run(job, new JobParameters());
 			logger.info("Exit Status : " + execution.getStatus());
 

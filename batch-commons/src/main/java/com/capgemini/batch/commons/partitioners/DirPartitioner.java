@@ -10,6 +10,7 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -21,7 +22,6 @@ import org.springframework.batch.core.listener.JobExecutionListenerSupport;
 import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Value;
-
 
 public class DirPartitioner extends JobExecutionListenerSupport implements Partitioner {
 
@@ -46,9 +46,13 @@ public class DirPartitioner extends JobExecutionListenerSupport implements Parti
 		log.info("Inizio partizionamento");
 		log.debug(fileApplicationProperties.toString());
 
-		int i = 1;
+		int partitionNumber = 1;
 
 		Map<String, ExecutionContext> result = new HashMap<>();
+
+		int maxFilePerDir = Integer
+				.decode(fileApplicationProperties.getProperty("dir.partitioner.maxFilePerDir") == null ? ("" + Integer.MAX_VALUE)
+						: fileApplicationProperties.getProperty("dir.partitioner.maxFilePerDir"));
 
 		String[] inputDirs = StringUtils.split(fileApplicationProperties.getProperty("dir.partitioner.inputDirs"), ",");
 		String[] fileSuffixs = StringUtils.split(fileApplicationProperties.getProperty("dir.partitioner.fileSuffixs"),
@@ -64,18 +68,21 @@ public class DirPartitioner extends JobExecutionListenerSupport implements Parti
 
 			if (CollectionUtils.isNotEmpty(c)) {
 
-				log.debug("trovati {} file nella directory {}", c.size(), inputDir);
+				log.debug("trovati {} file nella directory {}. Verranno elaborati al piu' {} file.", c.size(), inputDir, "maxFilePerDir = " + maxFilePerDir);
 
 				Iterator<File> splitIterator = c.iterator();
 
-				while (splitIterator.hasNext()) {
+				int fileCounter = 0;
+				while (splitIterator.hasNext() && fileCounter < maxFilePerDir) {
 					ExecutionContext value = new ExecutionContext();
 					File f = splitIterator.next();
-					if(!f.isDirectory()) {
+					if (!f.isDirectory()) {
 						value.putString("fileIn", "file:" + f.getAbsolutePath());
-						result.put("partition_" + i, value);
-						i++;
-					} else log.warn("skipped dir " + f.getAbsolutePath());
+						result.put("partition_" + partitionNumber, value);
+						partitionNumber++;
+						fileCounter++;
+					} else
+						log.warn("skipped dir " + f.getAbsolutePath());
 				}
 
 			} else {
