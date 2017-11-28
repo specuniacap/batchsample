@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/batch
+        http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+		http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+
+	<context:property-placeholder
+		location="classpath:/conf/profile.com.capgemini.batch.prova.${ambiente}.properties" />
+
+	<import resource="classpath:batch-commons-context.xml" />
+
+	<job id="reportJob" xmlns="http://www.springframework.org/schema/batch">
+		<step id="step1" next="partitionerStep">
+			<tasklet>
+				<chunk reader="cvsFileItemReader" writer="cvsFileItemWriter"
+					commit-interval="1">
+				</chunk>
+			</tasklet>
+		</step>
+		<step id="partitionerStep">
+			<partition step="manageFile" partitioner="dirPartitioner">
+				<handler grid-size="1" task-executor="taskExecutor" />
+			</partition>
+		</step>
+	</job>
+
+	<step id="manageFile" xmlns="http://www.springframework.org/schema/batch">
+		<tasklet ref="manageFileTasklet"></tasklet>
+	</step>
+
+	<bean id="manageFileTasklet" class="com.capgemini.batch.prova.tasklets.ManageFileTasklet" />
+
+	<bean id="report" class="com.capgemini.batch.prova.beans.Report"
+		scope="prototype" />
+
+	<bean id="cvsFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
+
+		<!-- Read a csv file -->
+		<property name="resource" value="classpath:csv/report.csv" />
+
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<!-- split it -->
+				<property name="lineTokenizer">
+					<bean
+						class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="names" value="date,impressions,clicks,earning" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<!-- return back to reader, rather than a mapped object. -->
+					<!-- <bean class="org.springframework.batch.item.file.mapping.PassThroughFieldSetMapper" 
+						/> -->
+					<!-- map to an object -->
+					<bean
+						class="org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper">
+						<property name="prototypeBeanName" value="report" />
+					</bean>
+				</property>
+
+			</bean>
+		</property>
+
+	</bean>
+
+	<bean id="cvsFileItemWriter" class="org.springframework.batch.item.file.FlatFileItemWriter">
+		<!-- write to this csv file -->
+		<property name="resource" value="file:C:/temp/report_out.csv" />
+		<property name="shouldDeleteIfExists" value="true" />
+
+		<property name="lineAggregator">
+			<bean
+				class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
+				<property name="delimiter" value="," />
+				<property name="fieldExtractor">
+					<bean
+						class="org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor">
+						<property name="names" value="date,impressions,clicks,earning" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+
+
+</beans>
