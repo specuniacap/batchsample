@@ -1,0 +1,50 @@
+<configuration>
+	<property resource="conf/profile.global.${ambiente}.properties" />
+    <property resource="conf/profile.local.${ambiente}.properties" />
+    
+ 	
+    <timestamp key="timestamp" datePattern="yyyyMMdd" />
+    
+    <!-- Appender console -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">		
+			<pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger [%line] - %msg%n</pattern>
+		</encoder>
+	</appender>
+ 	
+    <appender name="SIFT" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator>
+            <Key>loggerFileName</Key>
+            <DefaultValue>${logback.filename}</DefaultValue>
+        </discriminator>
+        <sift>
+            <appender name="${loggerFileName}" class="ch.qos.logback.core.FileAppender">
+                <File>${logback.log.dir}/${loggerFileName}_${timestamp}.log</File>
+                <Append>${logback.append}</Append>
+                <layout class="ch.qos.logback.classic.PatternLayout">
+                    <Pattern>%d{yyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger [%line] - %msg%n</Pattern>
+                </layout>
+                 <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">        
+        			<fileNamePattern>${logback.log.dir}/${loggerFileName}_%d{yyyyMMdd}.%i.log</fileNamePattern>
+        			<maxHistory>5</maxHistory>
+        			<cleanHistoryOnStart>true</cleanHistoryOnStart>
+		            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+					   	<maxFileSize>500MB</maxFileSize>
+					</timeBasedFileNamingAndTriggeringPolicy>
+				</rollingPolicy>
+             </appender>
+        </sift>
+    </appender>
+ 
+    <logger name="org.springframework"            level="INFO" />
+    <logger name="org.hibernate"                  level="INFO" />
+    <logger name="net.sf"                         level="ERROR" />
+    <logger name="org.apache.commons"             level="ERROR" />
+    <logger name="com.capgemini"                  level="DEBUG" />
+     
+    <root level="${logback.root.level}">
+        <appender-ref ref="SIFT"   />
+        <appender-ref ref="STDOUT" />
+    </root>
+ 
+</configuration>

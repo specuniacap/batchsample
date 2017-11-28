@@ -1,0 +1,2 @@
+2017-11-27 20:51:23.475 [main] INFO  org.springframework.context.support.ClassPathXmlApplicationContext [582] - Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6be46e8f: startup date [Mon Nov 27 20:51:23 CET 2017]; root of context hierarchy
+2017-11-27 20:51:23.537 [main] INFO  org.springframework.beans.factory.xml.XmlBeanDefinitionReader [317] - Loading XML bean definitions from class path resource [prova-context.xml]
