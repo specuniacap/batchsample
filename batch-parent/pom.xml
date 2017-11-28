@@ -9,6 +9,7 @@
   <modules>
   	<module>../batch-commons</module>
   	<module>../batch-prova</module>
+  	<module>../../../workspace/Allianz/batch-prova-email</module>
   </modules>
   
   	<organization>
