@@ -10,6 +10,7 @@
 	<modules>
 		<module>../batch-commons</module>
 		<module>../batch-prova</module>
+		
 	</modules>
 
 	<organization>
