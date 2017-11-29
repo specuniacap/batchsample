@@ -11,6 +11,7 @@
 		<module>../batch-commons</module>
 		<module>../batch-prova</module>
 		
+		<module>../id001_elab_pdf_scanner</module>
 	</modules>
 
 	<organization>

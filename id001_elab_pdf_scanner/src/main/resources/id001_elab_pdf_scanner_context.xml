@@ -21,14 +21,15 @@
 		<property name="locations">
 			<list>
 				<value>classpath:/conf/profile.global.${ambiente}.properties</value>
-				<value>classpath:/conf/profile.id001_elab_pdf_scanner.${ambiente}.properties</value>
+				<value>classpath:/conf/profile.id001_elab_pdf_scanner.${ambiente}.properties
+				</value>
 			</list>
 		</property>
 	</bean>
 
 	<import resource="classpath:batch-commons-context.xml" />
 
-	<job id="reportJob" xmlns="http://www.springframework.org/schema/batch">
+	<job id="id001_elab_pdf_scanner_job" xmlns="http://www.springframework.org/schema/batch">
 		<step id="partitionerStep">
 			<partition step="manageFile" partitioner="dirPartitioner">
 				<handler grid-size="20" task-executor="taskExecutor" />
@@ -38,9 +39,17 @@
 	</job>
 
 	<step id="manageFile" xmlns="http://www.springframework.org/schema/batch">
-		<tasklet ref="manageFileTasklet"></tasklet>
+		<tasklet ref="manageFileTasklet"/>
 	</step>
 
-	<bean id="manageFileTasklet" class="com.capgemini.batch.prova.tasklets.ManageFileTasklet" />
+	<bean id="manageFileTasklet"
+		class="com.capgemini.batch.id001_elab_pdf_scanner.tasklets.ManageFileTasklet"/>
+
+	<bean id="fileNameParser"
+		class="com.capgemini.batch.id001_elab_pdf_scanner.utils.FileNameParser" />
+
+	<bean id="exceptionHandler"
+		class="com.capgemini.batch.id001_elab_pdf_scanner.utils.ExceptionHandler" />
+			
 
 </beans>
