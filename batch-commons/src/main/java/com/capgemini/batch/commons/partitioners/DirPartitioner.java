@@ -10,7 +10,6 @@ import java.util.Properties;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
@@ -22,6 +21,8 @@ import org.springframework.batch.core.listener.JobExecutionListenerSupport;
 import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Value;
+
+import com.capgemini.batch.commons.constants.Constants;
 
 public class DirPartitioner extends JobExecutionListenerSupport implements Partitioner {
 
@@ -77,7 +78,7 @@ public class DirPartitioner extends JobExecutionListenerSupport implements Parti
 					ExecutionContext value = new ExecutionContext();
 					File f = splitIterator.next();
 					if (!f.isDirectory()) {
-						value.putString("fileIn", "file:" + f.getAbsolutePath());
+						value.putString(Constants.PART_FILE_IN, "file:" + f.getAbsolutePath());
 						result.put("partition_" + partitionNumber, value);
 						partitionNumber++;
 						fileCounter++;

@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 
+import com.capgemini.batch.commons.constants.Constants;
 import com.capgemini.batch.commons.interfaces.IExceptionHandler;
 
 public class ExceptionHandler implements IExceptionHandler {
@@ -14,7 +15,7 @@ public class ExceptionHandler implements IExceptionHandler {
 	@Override
 	public void handleException(Throwable t, StepContribution arg0, ChunkContext arg1) {
 		
-		String fileIn = (String) arg1.getStepContext().getStepExecutionContext().get("fileIn");
+		String fileIn = (String) arg1.getStepContext().getStepExecutionContext().get(Constants.PART_FILE_IN);
 
 		logger.debug("handleException fileIn = " + fileIn);
 

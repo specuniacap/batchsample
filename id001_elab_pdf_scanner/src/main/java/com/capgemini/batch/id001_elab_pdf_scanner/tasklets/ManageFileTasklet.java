@@ -9,6 +9,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.capgemini.batch.commons.constants.Constants;
 import com.capgemini.batch.commons.interfaces.IExceptionHandler;
 import com.capgemini.batch.commons.interfaces.IStringParser;
 
@@ -26,7 +27,7 @@ public class ManageFileTasklet implements Tasklet {
 
 	@Override
 	public RepeatStatus execute(StepContribution sc, ChunkContext cc) throws Exception {
-		String fileIn = (String) cc.getStepContext().getStepExecutionContext().get("fileIn");
+		String fileIn = (String) cc.getStepContext().getStepExecutionContext().get(Constants.PART_FILE_IN);
 
 		logger.debug("ManageFileTasklet fileIn = " + fileIn);
 
