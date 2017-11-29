@@ -13,11 +13,8 @@ public abstract class  App {
 
 	private static ILauncher appUtils;
 
-	public static void main(String[] args) {
-		if (args == null || args.length < 1)
-			throw new RuntimeException("Parametro jobIdentifier non specificato in args");
-
-		String[] springConfig = { "com-capgemini-batch-" + args[0] + "-context.xml" };
+	public static void main(String[] args) {		
+		String[] springConfig = { "prova-context.xml" };
 		ApplicationContext context = new ClassPathXmlApplicationContext(springConfig);
 
 		appUtils = context.getBean(Launcher.class);

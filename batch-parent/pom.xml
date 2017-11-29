@@ -1,17 +1,20 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>allianz-gestione-sinistri</groupId>
-  <artifactId>batch-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
-  <name>batch-parent</name>
-  <description>batch-parent per definizione moduli componenti</description>
-  <modules>
-  	<module>../batch-commons</module>
-  	<module>../batch-prova</module>
-  </modules>
-  
-  	<organization>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>allianz-gestione-sinistri</groupId>
+	<artifactId>batch-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>batch-parent</name>
+	<description>batch-parent per definizione moduli componenti</description>
+	<modules>
+		<module>../batch-commons</module>
+		<module>../batch-prova</module>
+		
+		<module>../id001_elab_pdf_scanner</module>
+	</modules>
+
+	<organization>
 		<name>Capgemini Italia spa</name>
 		<url>http://www.capgemini.com</url>
 	</organization>
@@ -38,7 +41,7 @@
 		<logback>1.2.3</logback>
 		<commons-lang3>3.5</commons-lang3>
 		<!-- <oracle>12.1.0.1</oracle> -->
-		<spring.version>4.3.8.RELEASE</spring.version>
+		<spring.version>4.3.13.RELEASE</spring.version>
 		<spring.batch.version>3.0.8.RELEASE</spring.batch.version>
 		<spring.data.jpa>1.11.3.RELEASE</spring.data.jpa>
 		<slf4j.version>1.7.25</slf4j.version>
@@ -182,8 +185,53 @@
 					<target>${jdk.version}</target>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+
+							<finalName>allianz-gestione-sinistri</finalName>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.handlers</resource>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.schemas</resource>
+								</transformer>
+								<!--  transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>com.capgemini.adegua.batch.shell.Main</Main-Class>
+										<Build-Number>1</Build-Number>
+									</manifestEntries>
+								</transformer-->
+							</transformers>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<!-- includes> <include>**</include> </includes -->
+									<excludes>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+									</excludes>
+								</filter>
+							</filters>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
-  
-  
+
+
 </project>
