@@ -21,7 +21,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:/conf/profile.global.${ambiente}.properties</value>
-				<value>classpath*:/conf/profile.com.capgemini.batch.prova.${ambiente}.properties</value>
+				<value>classpath:/conf/profile.com.capgemini.batch.prova.${ambiente}.properties</value>
 			</list>
 		</property>
 	</bean>
