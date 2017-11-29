@@ -205,9 +205,9 @@
 							<filters>
 								<filter>
 									<artifact>*:*</artifact>
-									<includes>
+									<!--  includes>
 										<include>**</include>
-									</includes>
+									</includes-->
 									<excludes>
 										<exclude>META-INF/*.SF</exclude>
 										<exclude>META-INF/*.DSA</exclude>
