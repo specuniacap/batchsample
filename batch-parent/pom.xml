@@ -10,7 +10,7 @@
 	<modules>
 		<module>../batch-commons</module>
 		<module>../batch-prova</module>
-		
+
 		<module>../id001_elab_pdf_scanner</module>
 	</modules>
 
@@ -45,9 +45,25 @@
 		<spring.batch.version>3.0.8.RELEASE</spring.batch.version>
 		<spring.data.jpa>1.11.3.RELEASE</spring.data.jpa>
 		<slf4j.version>1.7.25</slf4j.version>
+		<javax.mail>1.4.7</javax.mail>
+		<com.sun.mail>1.6.0</com.sun.mail>
 	</properties>
 
 	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>${javax.mail}</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.sun.mail/smtp -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>smtp</artifactId>
+			<version>${com.sun.mail}</version>
+		</dependency>
 
 		<!-- JUnit -->
 		<dependency>
@@ -206,13 +222,9 @@
 									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
 									<resource>META-INF/spring.schemas</resource>
 								</transformer>
-								<!--  transformer
-									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<manifestEntries>
-										<Main-Class>com.capgemini.adegua.batch.shell.Main</Main-Class>
-										<Build-Number>1</Build-Number>
-									</manifestEntries>
-								</transformer-->
+								<!-- transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> 
+									<manifestEntries> <Main-Class>com.capgemini.adegua.batch.shell.Main</Main-Class> 
+									<Build-Number>1</Build-Number> </manifestEntries> </transformer -->
 							</transformers>
 							<filters>
 								<filter>
