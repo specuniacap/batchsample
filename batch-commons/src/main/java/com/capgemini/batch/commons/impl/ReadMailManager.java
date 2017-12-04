@@ -191,7 +191,7 @@ public class ReadMailManager implements IMail {
 				boolean inError = false;
 				if (StringUtils.isNotEmpty(readMailMessageReaderClassName)) {
 					try {
-						Class readMailMessageReaderClass = Class.forName(readMailMessageReaderClassName);
+						//Class readMailMessageReaderClass = Class.forName(readMailMessageReaderClassName);
 						//IReadMailMessageReader readMailMessageReaderInstance = (IReadMailMessageReader) readMailMessageReaderClass.newInstance();
 						readMailMessageReaderInstance.manageMessage(mailMessageBean);
 					} catch (Throwable e) {
