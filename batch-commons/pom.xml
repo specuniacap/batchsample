@@ -13,4 +13,14 @@
 		<version>0.0.1-SNAPSHOT</version>
 		<relativePath>../batch-parent</relativePath>
 	</parent>
+	
+	<dependencies>
+		<dependency>
+			<groupId>thumber-group</groupId>
+			<artifactId>thumber</artifactId>
+			<version>0.1</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/resources/Thumber.jar</systemPath>
+		</dependency>
+	</dependencies>
 </project>
