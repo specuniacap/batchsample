@@ -22,6 +22,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.batch.commons.dto.MailMessageBean;
@@ -33,6 +35,7 @@ import com.capgemini.batch.commons.interfaces.IReadMailMessageSearcher;
 public class ReadMailManager implements IMail {
 	
 	@Autowired
+	@Qualifier("readMailMessageReader")	
 	private IReadMailMessageReader readMailMessageReaderInstance;
 	
 	public static final String MAIL_SERVER_TYPE_POP3 = "pop3";
@@ -58,7 +61,25 @@ public class ReadMailManager implements IMail {
 	public static final String HeaderPec_XTrasporto_Errore = "errore";
 	public static final String HeaderPec_XTrasporto_PostaCertificata = "posta-certificata";
 
-	private String username, password, host, readMailMessageReaderClassName, connectionTimeoutMsec = "10000", folderName;
+	private String  readMailMessageReaderClassName, connectionTimeoutMsec = "10000", folderName;
+	
+	@Value("#{fileApplicationProperties['mail.username']}")
+	private String username;
+	
+	@Value("#{fileApplicationProperties['mail.password']}")
+	private String password;
+
+	@Value("#{fileApplicationProperties['mail.host']}")
+	private String host;
+	
+	@Value("#{fileApplicationProperties['mail.server.type']}")
+	private String mailServerType;
+	
+	@Value("#{fileApplicationProperties['mail.delete.onread']}")
+	private boolean deleteOnReadOk = true;
+	
+	//private String mailServerType = MAIL_SERVER_TYPE_POP3;
+	
 	private String readMailMessageSearcherClassName = "com.capgemini.batch.commons.impl.DefaultReadMailMessageSearcher";
 	private boolean markSeenOnReadOk = false;
 	private boolean debug = false;
@@ -72,8 +93,8 @@ public class ReadMailManager implements IMail {
 		this.markSeenOnReadOk = markSeenOnReadOk;
 	}
 
-	private boolean deleteOnReadOk = true;
-	private String mailServerType = MAIL_SERVER_TYPE_POP3;
+	
+	
 
 	public String getMailServerType() {
 		return mailServerType;
@@ -189,16 +210,16 @@ public class ReadMailManager implements IMail {
 				mailMessageBean.setBody(new String(messageBody.toByteArray()));
 
 				boolean inError = false;
-				if (StringUtils.isNotEmpty(readMailMessageReaderClassName)) {
-					try {
+//				if (StringUtils.isNotEmpty(readMailMessageReaderClassName)) {
+//					try {
 						//Class readMailMessageReaderClass = Class.forName(readMailMessageReaderClassName);
 						//IReadMailMessageReader readMailMessageReaderInstance = (IReadMailMessageReader) readMailMessageReaderClass.newInstance();
 						readMailMessageReaderInstance.manageMessage(mailMessageBean);
-					} catch (Throwable e) {
-						_logger.error(e.getMessage(), e);
-						inError = true;
-					}
-				}
+//					} catch (Throwable e) {
+//						_logger.error(e.getMessage(), e);
+//						inError = true;
+//					}
+//				}
 
 				if (!inError) {
 
