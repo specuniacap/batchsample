@@ -1,8 +1,9 @@
 package com.capgemini.allianz.sinistri.batch.commons.interfaces;
 
-import com.capgemini.allianz.sinistri.batch.commons.impl.ReadMailException;
+import com.capgemini.allianz.sinistri.batch.commons.exceptions.ReadMailException;
 
-public interface IMail {
+public interface IMailReader {
 
 	public void readMessages() throws ReadMailException;
+	
 }

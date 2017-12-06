@@ -1,4 +1,4 @@
-package com.capgemini.allianz.sinistri.batch.commons.impl;
+package com.capgemini.allianz.sinistri.batch.commons.exceptions;
 
 public class ReadMailException extends Exception {
 

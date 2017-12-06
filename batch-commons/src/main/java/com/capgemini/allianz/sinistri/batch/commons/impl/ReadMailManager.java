@@ -27,12 +27,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.capgemini.allianz.sinistri.batch.commons.dto.MailMessageBean;
-import com.capgemini.allianz.sinistri.batch.commons.interfaces.IMail;
+import com.capgemini.allianz.sinistri.batch.commons.exceptions.ReadMailException;
+import com.capgemini.allianz.sinistri.batch.commons.interfaces.IMailReader;
 import com.capgemini.allianz.sinistri.batch.commons.interfaces.IReadMailMessageReader;
 import com.capgemini.allianz.sinistri.batch.commons.interfaces.IReadMailMessageSearcher;
 
 @Component
-public class ReadMailManager implements IMail {
+public class ReadMailManager implements IMailReader {
 	
 	@Autowired
 	@Qualifier("readMailMessageReader")	
