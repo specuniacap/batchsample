@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:batch="http://www.springframework.org/schema/batch" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context-4.3.xsd
+        http://www.springframework.org/schema/batch
+        http://www.springframework.org/schema/batch/spring-batch-3.0.xsd
+		http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+
+	<context:property-placeholder
+		location="classpath:/conf/profile.id001_elab_pdf_scanner.${ambiente}.properties" />
+
+	<bean id="fileApplicationProperties"
+		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations">
+			<list>
+				<value>classpath:/conf/profile.global.${ambiente}.properties</value>
+				<value>classpath:/conf/profile.id001_elab_pdf_scanner.${ambiente}.properties
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<import resource="classpath:batch-commons-context.xml" />
+
+	<job id="id001_elab_pdf_scanner_job" xmlns="http://www.springframework.org/schema/batch">
+		<step id="partitionerStep">
+			<partition step="manageFile" partitioner="dirPartitioner">
+				<handler grid-size="20" task-executor="taskExecutor" />
+			</partition>
+		</step>
+
+	</job>
+
+	<step id="manageFile" xmlns="http://www.springframework.org/schema/batch">
+		<tasklet ref="manageFileTasklet"/>
+	</step>
+
+	<bean id="manageFileTasklet"
+		class="com.capgemini.allianz.sinistri.batch.id001_elab_pdf_scanner.tasklets.ManageFileTasklet"/>
+
+	<bean id="fileNameParser"
+		class="com.capgemini.allianz.sinistri.batch.id001_elab_pdf_scanner.utils.FileNameParser" />
+
+	<bean id="exceptionHandler"
+		class="com.capgemini.allianz.sinistri.batch.id001_elab_pdf_scanner.utils.ExceptionHandler" />
+		
+<!-- classe che legge da una casella di posta-->			
+	<bean id="emailReader"
+		class="com.capgemini.allianz.sinistri.batch.commons.impl.ReadMailManager" />
+
+<!-- classe che esegue operazioni su messaggi letti da una casella di posta-->				
+	<bean id="readMailMessageReader" 
+		class="com.capgemini.allianz.sinistri.batch.commons.impl.ReadMailMessageReader"	/>
+		
+</beans>
