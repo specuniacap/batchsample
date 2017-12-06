@@ -41,7 +41,7 @@
 	</bean>
 
 	<bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor" />
-	<bean id="dirPartitioner" class="com.capgemini.batch.commons.partitioners.DirPartitioner"
+	<bean id="dirPartitioner" class="com.capgemini.allianz.sinistri.batch.commons.partitioners.DirPartitioner"
 		scope="step" />
 
 </beans>
