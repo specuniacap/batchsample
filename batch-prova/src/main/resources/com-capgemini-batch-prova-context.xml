@@ -14,7 +14,7 @@
 
 
 	<context:property-placeholder
-		location="classpath:/conf/profile.com.capgemini.batch.prova.${ambiente}.properties" />
+		location="classpath:/conf/profile.com.capgemini.allianz.sinistri.batch.prova.${ambiente}.properties" />
 
 	<bean id="fileApplicationProperties"
 		class="org.springframework.beans.factory.config.PropertiesFactoryBean">
@@ -41,6 +41,6 @@
 		<tasklet ref="manageFileTasklet"></tasklet>
 	</step>
 
-	<bean id="manageFileTasklet" class="com.capgemini.batch.prova.tasklets.ManageFileTasklet" />
+	<bean id="manageFileTasklet" class="com.capgemini.allianz.sinistri.batch.prova.tasklets.ManageFileTasklet" />
 
 </beans>

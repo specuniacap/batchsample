@@ -41,6 +41,6 @@
 		<tasklet ref="manageFileTasklet"></tasklet>
 	</step>
 
-	<bean id="manageFileTasklet" class="com.capgemini.batch.prova.tasklets.ManageFileTasklet" />
+	<bean id="manageFileTasklet" class="com.capgemini.allianz.sinistri.batch.prova.tasklets.ManageFileTasklet" />
 
 </beans>

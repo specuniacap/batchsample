@@ -14,7 +14,7 @@
 
 
 	<context:property-placeholder
-		location="classpath:/conf/profile.com.capgemini.batch.prova.${ambiente}.properties" />
+		location="classpath:/conf/profile.com.capgemini.allianz.sinistri.batch.prova.${ambiente}.properties" />
 
 	<import resource="classpath:batch-commons-context.xml" />
 
@@ -37,9 +37,9 @@
 		<tasklet ref="manageFileTasklet"></tasklet>
 	</step>
 
-	<bean id="manageFileTasklet" class="com.capgemini.batch.prova.tasklets.ManageFileTasklet" />
+	<bean id="manageFileTasklet" class="com.capgemini.allianz.sinistri.batch.prova.tasklets.ManageFileTasklet" />
 
-	<bean id="report" class="com.capgemini.batch.prova.beans.Report"
+	<bean id="report" class="com.capgemini.allianz.sinistri.batch.prova.beans.Report"
 		scope="prototype" />
 
 	<bean id="cvsFileItemReader" class="org.springframework.batch.item.file.FlatFileItemReader">
