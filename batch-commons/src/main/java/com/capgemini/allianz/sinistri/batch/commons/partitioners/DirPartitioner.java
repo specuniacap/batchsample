@@ -22,7 +22,9 @@ import org.springframework.batch.core.partition.support.Partitioner;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Value;
 
-import com.capgemini.batch.commons.constants.Constants;
+import com.capgemini.allianz.sinistri.batch.commons.constants.Constants;
+
+
 
 public class DirPartitioner extends JobExecutionListenerSupport implements Partitioner {
 
